@@ -29,6 +29,11 @@ void yyerror(const char *msg) { fprintf(stderr, "Error: %s\n", msg); }
  * TODO 4 — Agregar: %right UMINUS       (mayor precedencia de todas)
  */
 
+%left '+' '-'
+%left '*' '/'
+%right POW
+%right UMINUS
+
 %%
 
 input:
@@ -46,7 +51,7 @@ exp:
   | exp '*' exp           { $$ = $1 * $3; }
   | exp '/' exp           { $$ = $1 / $3; }
   | exp POW exp           { $$ = (int)pow($1, $3); }
-  | '-' exp %prec UMINUS  { $$ = 0; /* TODO 5 — Reemplazar 0 por la expresión correcta */ }
+  | '-' exp %prec UMINUS  { $$ = -$2; }
   | '(' exp ')'           { $$ = $2; }
   | NUM                   { $$ = $1; }
   ;
